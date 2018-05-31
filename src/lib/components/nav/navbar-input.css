@@ -1,0 +1,12 @@
+.navbar-input {
+	display: inline-block;
+	height: 100%;
+}
+
+.navbar-input > input {
+	box-sizing: border-box;
+	height: 30px;
+	margin-top: 10px;
+	margin-left: 10px;
+	font-size: 14px;
+}

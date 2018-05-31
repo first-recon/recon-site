@@ -1,0 +1,8 @@
+.navbar {
+	background-color: black;
+	opacity: 0.8;
+	margin-bottom: 0;
+	position: relative;
+	height: 50px;
+	z-index: 1;
+}

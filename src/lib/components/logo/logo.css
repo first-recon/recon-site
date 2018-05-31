@@ -1,0 +1,25 @@
+a.logo {
+	display: inline-block;
+	height: 100%;
+	padding: 0 12px;
+	text-decoration: none;
+	color: white;
+}
+
+a.logo:hover {
+	transition: 0.3s background-color;
+    color: black;
+    background-color: white;
+}
+
+a.logo > span {
+	margin-top: 10px;
+	border: 2px solid white;
+	padding: 0px 3px 0px 3px;
+	font-size: 22px;
+	display: inline-block;
+}
+ a.logo > span:hover {
+	transition: 0.3s border-color;
+    border-color: black;
+ }

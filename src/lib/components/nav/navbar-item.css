@@ -1,0 +1,19 @@
+a.navbar-item {
+	display: inline-block;
+	line-height: 50px;
+	height: 100%;
+	padding: 0 12px;
+	text-decoration: none;
+	vertical-align: top;
+	color: white;
+}
+
+a.navbar-item:hover {
+	transition: 0.3s background-color;
+    color: black;
+    background-color: white;
+}
+
+.navbar-float.center > a.navbar-item {
+	width: 70px;
+}

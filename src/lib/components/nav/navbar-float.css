@@ -1,0 +1,7 @@
+.navbar-float {
+	height: 100%;
+}
+
+.navbar-float.center {
+	text-align: center;
+}
