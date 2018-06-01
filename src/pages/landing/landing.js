@@ -30,7 +30,7 @@ function _get_matches() {
 
 G.onNewElement('matchList', function (matchList) {
 	_get_matches()
-		.then(function (matches) {
-			G.inject(matchList, { 'match-list': MatchList(matches) })
+		.then(function (response) {
+			G.inject(matchList, { 'match-list': MatchList(response.results) })
 		});
 });

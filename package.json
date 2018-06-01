@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js production",
-    "start-dev": "webpack && cp -R www/* dist/; node server.js",
+    "start-dev": "webpack && cp -R www/* dist/ && node server.js development",
     "build": "webpack && cp -R www/* dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
