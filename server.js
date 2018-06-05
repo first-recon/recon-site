@@ -12,4 +12,16 @@ app.get('/matches', (req, res) => {
     });
 });
 
+app.get('/teams', (req, res) => {
+    request('http://api.firstrecon.tech/teams', (err, response, body) => {
+        res.send(body);
+    });
+});
+
+app.get('/team/:team', (req, res) => {
+    request('http://api.firstrecon.tech/teams/' + req.params.team + '?includeMatches=true', (err, response, body) => {
+        res.send(body);
+    });
+});
+
 app.listen(config.port, () => console.log(`Listening on port ${config.port}...`));
