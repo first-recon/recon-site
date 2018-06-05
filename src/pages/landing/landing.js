@@ -1,4 +1,5 @@
 import * as G from '../../lib/helpers/g.js';
+import config from '../../../config';
 
 import style from './landing.css';
 
@@ -6,18 +7,33 @@ import MatchList from '../../lib/components/match-list';
 
 var _matches = [];
 
+var searchBoxId = 'searchBox';
+
 export default function () {
 
 	var landingHTML = require('./landing.html');
 
 	document.title = 'Recon FTC Scouting';
 
-	return G.inject(landingHTML);
+	return G.inject(landingHTML, {
+		'id': searchBoxId,
+		'events': G.attachEvents(searchBoxId, { onkeyup: onSearch })
+	});
 }
 
-function _get_matches() {
+function onSearch(event) {
+	if (event.keyCode === 13) {
+		_get_matches(event.target.value)
+			.then(function (response) {
+				G.get('#matchList').innerHTML = MatchList(response.results);
+			});
+	}
+}
+
+function _get_matches(team='') {
 	return new Promise(function (res, rej) {
-		fetch('/matches')
+		var url = config.apis.matches.proxy + (team.length ? '?team=' + team : '');
+		fetch(url)
 			.then(function (response) {
 				return response.json();
 			})
@@ -31,6 +47,6 @@ function _get_matches() {
 G.onNewElement('matchList', function (matchList) {
 	_get_matches()
 		.then(function (response) {
-			G.inject(matchList, { 'match-list': MatchList(response.results) })
+			matchList.innerHTML = MatchList(response.results);
 		});
 });

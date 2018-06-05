@@ -8,9 +8,9 @@
 	width: 100%;
 	padding: 5px;
 	text-align: center;
+	border-bottom: 1px solid black;
 }
 
 .page-heading > h1 {
 	color: black;
-	border-bottom: 1px solid black;
 }
