@@ -1,0 +1,18 @@
+.team-info-container {
+    font-size: 18px;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#teamDetail {
+    margin: 10px;
+}
+
+#teamNumber {
+    width: auto;
+    margin-right: 8px;
+}
+
+#teamName {
+    flex: 1;
+}
