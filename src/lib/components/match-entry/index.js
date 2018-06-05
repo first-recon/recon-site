@@ -1,19 +1,21 @@
 import style from './match-entry.css';
 
+import MatchPeriod from '../match-period';
+
 export default function (match) {
     var matchEntry = require('./match-entry.html');
 
-    var autoScore = match.data.rules.filter(r => r.period === 'autonomous').reduce((t, r) => t + r.points, 0);
-    var teleopScore = match.data.rules.filter(r => r.period === 'teleop').reduce((t, r) => t + r.points, 0);
-    var egScore = match.data.rules.filter(r => r.period === 'endgame').reduce((t, r) => t + r.points, 0);
+    var autoMatches = match.data.rules.filter(r => r.period === 'autonomous');
+    var teleopMatches = match.data.rules.filter(r => r.period === 'teleop');
+    var endgameMatches = match.data.rules.filter(r => r.period === 'endgame');
     var totalScore = match.data.rules.reduce((t, r) => t + r.points, 0);
 
+    var autoPeriod = MatchPeriod('Autonomous', 'rgb(150, 140, 0)', autoMatches);
+    var teleopPeriod = MatchPeriod('Teleop', 'darkgreen', teleopMatches);
+    var endgamePeriod = MatchPeriod('End Game', 'darkred', endgameMatches);
+
     return matchEntry
-        .replace('{team-number}', match.team)
-        .replace('{match-num}', match.matchid.split('-')[1])
-        .replace('{autonomous-score}', autoScore)
-        .replace('{teleop-score}', teleopScore)
-        .replace('{endgame-score}', egScore)
+        .replace('{match-num}', match.number)
         .replace('{total-score}', totalScore)
-        .replace('{data}', match.data.rules.map(r => `<div class="match-rule">${r.name}: ${r.points}</div>`).join(''));
+        .replace('{data}', [autoPeriod, teleopPeriod, endgamePeriod].join(''));
 }
