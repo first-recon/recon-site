@@ -7,25 +7,25 @@ const config = require('./config');
 app.use(Express.static(path.join(__dirname, 'dist')));
 
 app.get('/matches', (req, res) => {
-    request('http://api.firstrecon.tech/matches', (err, response, body) => {
+    request(config.apis.match.url, (err, response, body) => {
         res.send(body);
     });
 });
 
 app.get('/teams', (req, res) => {
-    request('http://localhost:3002', (err, response, body) => {
+    request(config.apis.team.url, (err, response, body) => {
         res.send(body);
     });
 });
 
 app.get('/teams/search', (req, res) => {
-    request(`http://localhost:3002/search?q=${req.query.q}`, (err, response, body) => {
+    request(`${config.apis.team.url}/search?q=${req.query.q}`, (err, response, body) => {
         res.send(body);
     });
 });
 
 app.get('/team/:team', (req, res) => {
-    request(`http://localhost:3002/${req.params.team}?includeMatches=true`, (err, response, body) => {
+    request(`${config.apis.team.url}/${req.params.team}?includeMatches=true`, (err, response, body) => {
         res.send(body);
     });
 });
