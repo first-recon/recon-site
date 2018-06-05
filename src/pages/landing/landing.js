@@ -3,9 +3,7 @@ import config from '../../../config';
 
 import style from './landing.css';
 
-import MatchList from '../../lib/components/match-list';
-
-var _matches = [];
+import TeamList from '../../lib/components/team-list';
 
 var searchBoxId = 'searchBox';
 
@@ -16,37 +14,34 @@ export default function () {
 	document.title = 'Recon FTC Scouting';
 
 	return G.inject(landingHTML, {
-		'id': searchBoxId,
-		'events': G.attachEvents(searchBoxId, { onkeyup: onSearch })
+		'events': G.attachEvents('searchBox', { onkeyup: onSearchBoxKeyUp })
 	});
 }
 
-function onSearch(event) {
+function onSearchBoxKeyUp(event) {
 	if (event.keyCode === 13) {
-		_get_matches(event.target.value)
+		_search_teams(event.target.value)
 			.then(function (response) {
-				G.get('#matchList').innerHTML = MatchList(response.results);
+				teamList.innerHTML = TeamList(response.results);
 			});
 	}
 }
 
-function _get_matches(team='') {
+function _search_teams(team) {
 	return new Promise(function (res, rej) {
-		var url = config.apis.matches.proxy + (team.length ? '?team=' + team : '');
-		fetch(url)
+		fetch(!team ? '/teams' : '/teams/search?q=' + team)
 			.then(function (response) {
 				return response.json();
 			})
-			.then(function (ms) {
-				_matches = ms;
-				res(_matches);
+			.then(function (ts) {
+				res(ts);
 			});
 	});
 }
 
-G.onNewElement('matchList', function (matchList) {
-	_get_matches()
+G.onNewElement('teamList', function (teamList) {
+	_search_teams()
 		.then(function (response) {
-			matchList.innerHTML = MatchList(response.results);
+			teamList.innerHTML = TeamList(response.results);
 		});
 });
