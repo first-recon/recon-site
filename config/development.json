@@ -1,9 +1,12 @@
 {
     "port": 3000,
     "apis": {
-        "matches": {
+        "match": {
             "proxy": "/matches",
-            "url": "http://api.firstrecon.tech/matches"
+            "url": "http://localhost:3003"
+        },
+        "team": {
+            "url": "http://localhost:3002"
         }
     }
 }

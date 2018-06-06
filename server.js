@@ -13,8 +13,36 @@ app.get('/matches', (req, res) => {
 });
 
 app.get('/teams', (req, res) => {
+    // TODO: promisify this
     request(config.apis.team.url, (err, response, body) => {
-        res.send(body);
+        const teamResponse = JSON.parse(body);
+
+        // merge in match counts - this data is stored in the match api
+        // TODO: add endpoint for getting this data directly from the match api
+        request(config.apis.match.url, (matchError, matchResponse, matchBody) => {
+            const matchCounts = JSON.parse(matchBody).results.reduce((counts, m) => {
+                if (counts[m.team]) {
+                    counts[m.team]++;
+                } else {
+                    counts[m.team] = 1;
+                }
+                return counts;
+            }, {});
+
+            const mergedResults = teamResponse.results.map(team => {
+                return Object.assign({}, team, { numberOfMatches: matchCounts[team.number] || 0 });
+            })
+            .sort((a, b) => {
+                if (a.numberOfMatches === b.numberOfMatches) {
+                    return a.name > b.name;
+                }
+                return a.numberOfMatches < b.numberOfMatches
+            });
+
+            res.send(Object.assign({}, teamResponse, {
+                results: mergedResults
+            }));
+        });
     });
 });
 

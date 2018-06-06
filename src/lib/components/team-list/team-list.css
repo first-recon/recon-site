@@ -1,4 +1,24 @@
+#teamList {
+    margin: 10px;
+}
+
 .team-result {
+    width: 250px;
     display: block;
     text-align: left;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid darkgrey;
+    padding: 2px 3px;
+}
+
+.team-result > div {
+    color: grey;
+    font-weight: normal;
+    float: right;
+}
+
+.team-result:hover {
+    color: darkgrey;
 }
