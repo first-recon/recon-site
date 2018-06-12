@@ -1,7 +1,5 @@
-import MatchEntry from '../match-entry';
+import MatchTournament from '../match-tournament';
 
-export default function (matchData) {
-	var matches = matchData.map(m => MatchEntry(m));
-
-	return matches.join('');
+export default function (tournaments) {
+	return tournaments.map(t => MatchTournament(t)).join('');
 }

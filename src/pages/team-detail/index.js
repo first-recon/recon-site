@@ -24,7 +24,7 @@ G.onNewElement('teamDetail', function (teamDetail) {
                 var team = response.result;
                 G.get('#teamName').innerHTML = team.name;
                 G.get('#teamNumber').innerHTML = team.number;
-                G.get('#matchList').innerHTML = team.matches.length ? MatchList(team.matches) : 'No matches found :(';
+                G.get('#matchList').innerHTML = team.events.length ? MatchList(team.events) : 'No matches found :(';
             }
         });
 });

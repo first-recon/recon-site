@@ -1,15 +1,13 @@
 const Express = require('express');
 const app = new Express();
 const path = require('path');
-const request = require('request');
+const request = require('request-promise-native');
 const config = require('./config');
 
 app.use(Express.static(path.join(__dirname, 'dist')));
 
 app.get('/matches', (req, res) => {
-    request(config.apis.match.url, (err, response, body) => {
-        res.send(body);
-    });
+    request(config.apis.match.url).then(res.send);
 });
 
 app.get('/teams', (req, res) => {
@@ -29,15 +27,17 @@ app.get('/teams', (req, res) => {
                 return counts;
             }, {});
 
-            const mergedResults = teamResponse.results.map(team => {
+            const mergedResults = teamResponse.results ? teamResponse.results.map(team => {
                 return Object.assign({}, team, { numberOfMatches: matchCounts[team.number] || 0 });
             })
             .sort((a, b) => {
                 if (a.numberOfMatches === b.numberOfMatches) {
-                    return a.name > b.name;
+                    if (a.name < b.name) return -1;
+                    if (a.name > b.name) return 1;
+                    return 0;
                 }
-                return a.numberOfMatches < b.numberOfMatches
-            });
+                return b.numberOfMatches - a.numberOfMatches;
+            }) : [];
 
             res.send(Object.assign({}, teamResponse, {
                 results: mergedResults
@@ -47,14 +47,44 @@ app.get('/teams', (req, res) => {
 });
 
 app.get('/teams/search', (req, res) => {
-    request(`${config.apis.team.url}/search?q=${req.query.q}`, (err, response, body) => {
-        res.send(body);
-    });
+    request(`${config.apis.team.url}/search?q=${req.query.q}`).then(res.send);
 });
 
 app.get('/team/:team', (req, res) => {
-    request(`${config.apis.team.url}/${req.params.team}?includeMatches=true`, (err, response, body) => {
-        res.send(body);
+    Promise.all([
+        request(`${config.apis.team.url}/${req.params.team}`),
+        request(`${config.apis.match.url}?team=${req.params.team}`)
+    ])
+    .then(([teamJSON, matchesJSON]) => {
+        const team = JSON.parse(teamJSON).result;
+        const matches = JSON.parse(matchesJSON).results;
+        const matchesIndexedByEvent = matches.reduce((t, m) => {
+            const tId = m.matchid.split('-')[0];
+            if (t[tId]) {
+                t[tId] = t[tId].concat(m);
+                return t;
+            }
+            t[tId] = [m];
+            return t;
+        }, {});
+
+        Promise.all(Object.keys(matchesIndexedByEvent)
+            .map(id => {
+                return request(`${config.apis.event.url}?id=${id}`)
+                    .then((eventApiResponse) => {
+                        const event = JSON.parse(eventApiResponse).results[0];
+                        return Object.assign({}, event, { matches: matchesIndexedByEvent[id] });
+                    });
+            }))
+            .then((hydratedMatches) => {
+                res.send({
+                    success: true,
+                    result: Object.assign({}, team, { events: hydratedMatches })
+                });
+            });
+    })
+    .catch((error) => {
+        res.status(500).send({ success: false, message: 'an unknown error occurred', error });
     });
 });
 
