@@ -10,6 +10,18 @@ app.get('/matches', (req, res) => {
     request(config.apis.match.url).then(res.send);
 });
 
+app.get('/teams/search', (req, res) => {
+    console.log(`${config.apis.team.url}/search?q=${req.query.q}`);
+    request(`${config.apis.team.url}/search?q=${req.query.q}`, (error, response, body) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send({ success: false, message: 'an unknown error occurred' });
+        } else {
+            res.send(body);
+        }
+    });
+});
+
 app.get('/teams', (req, res) => {
     // TODO: promisify this
     request(config.apis.team.url, (err, response, body) => {
