@@ -7,6 +7,9 @@
         },
         "team": {
             "url": "http://api.firstrecon.tech/teams"
+        },
+        "event": {
+            "url": "http://api.firstrecon.tech/events"
         }
     }
 }
