@@ -4,22 +4,31 @@ const request = require('request-promise-native');
 function processTeamsAndMatches (teams, matches) {
 
     function reduceMatch (stats, m) {
-        const matchAvgScore = m.data.rules.reduce((t, r) => t + r.points, 0);
+        const matchTotal = m.data.rules.reduce((t, r) => t + r.points, 0);
         if (stats[m.team]) {
             stats[m.team] = {
                 numberOfMatches: stats[m.team].numberOfMatches + 1,
-                avgScore: (stats[m.team].avgScore + matchAvgScore) / 2
+                totalPoints: (stats[m.team].totalPoints + matchTotal)
             };
         } else {
             stats[m.team] = {
                 numberOfMatches: 1,
-                avgScore: matchAvgScore
+                totalPoints: matchTotal
             };
         }
         return stats;
     }
 
-    const aggregatedStats = matches.reduce(reduceMatch, {});
+    const collectedStats = matches.reduce(reduceMatch, {});
+    const aggregatedStats = {};
+    for (team in collectedStats) {
+        const teamStats = collectedStats[team];
+        aggregatedStats[team] = Object.assign(
+            {}, 
+            teamStats,
+            { avgScore: teamStats.totalPoints / teamStats.numberOfMatches, totalPoints: undefined }
+        );
+    }
 
     const mergedResults = teams.map(team => {
         return Object.assign({}, team, {
