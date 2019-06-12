@@ -2,17 +2,26 @@ import style from './match-entry.css';
 
 import MatchPeriod from '../match-period';
 
+import { GameConfig } from '../../../recon-lib';
+
+
 export default function (match) {
-    var matchEntry = require('./match-entry.html');
+    const matchEntry = require('./match-entry.html');
+    
+    const byCode = ({code}) => match.data[code];
+    const getValueFromMatchRule = (value, rule) => (typeof value === 'boolean' ? rule.value : value);
 
-    var autoMatches = match.data.rules.filter(r => r.period === 'autonomous');
-    var teleopMatches = match.data.rules.filter(r => r.period === 'teleop');
-    var endgameMatches = match.data.rules.filter(r => r.period === 'endgame');
-    var totalScore = match.data.rules.reduce((t, r) => t + r.points, 0);
+    const autoMatches = GameConfig.getRulesForPeriod('autonoumous').filter(byCode);
+    const teleopMatches = GameConfig.getRulesForPeriod('teleop').filter(byCode);
+    const endgameMatches = GameConfig.getRulesForPeriod('endgame').filter(byCode);
+    const totalScore = GameConfig.getRuleset().reduce((runningTotal, rule) => {
+        const matchRuleValue = match.data[rule.code];
+        return runningTotal + getValueFromMatchRule(matchRuleValue, rule);
+    }, 0);
 
-    var autoPeriod = MatchPeriod('Autonomous', 'rgb(150, 140, 0)', autoMatches);
-    var teleopPeriod = MatchPeriod('Teleop', 'darkgreen', teleopMatches);
-    var endgamePeriod = MatchPeriod('End Game', 'darkred', endgameMatches);
+    const autoPeriod = MatchPeriod('Autonomous', 'rgb(150, 140, 0)', autoMatches);
+    const teleopPeriod = MatchPeriod('Teleop', 'darkgreen', teleopMatches);
+    const endgamePeriod = MatchPeriod('End Game', 'darkred', endgameMatches);
 
     return matchEntry
         .replace('{match-num}', match.number)

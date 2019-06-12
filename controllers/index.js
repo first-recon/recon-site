@@ -1,42 +1,28 @@
+const GameConfig = require('../../recon-app/recon-lib').GameConfig;
 const config = require('../config');
 const request = require('request-promise-native');
 
 function processTeamsAndMatches (teams, matches) {
 
-    function reduceMatch (stats, m) {
-        const matchTotal = m.data.rules.reduce((t, r) => t + r.points, 0);
-        if (stats[m.team]) {
-            stats[m.team] = {
-                numberOfMatches: stats[m.team].numberOfMatches + 1,
-                totalPoints: (stats[m.team].totalPoints + matchTotal)
-            };
-        } else {
-            stats[m.team] = {
-                numberOfMatches: 1,
-                totalPoints: matchTotal
-            };
-        }
-        return stats;
-    }
+    const calculateTotalMatchScore = (match) => GameConfig.calcScoresFromData(match.data).stats.total;
 
-    const collectedStats = matches.reduce(reduceMatch, {});
-    const aggregatedStats = {};
-    for (team in collectedStats) {
-        const teamStats = collectedStats[team];
-        aggregatedStats[team] = Object.assign(
-            {}, 
-            teamStats,
-            { avgScore: teamStats.totalPoints / teamStats.numberOfMatches, totalPoints: undefined }
-        );
-    }
+    const calcTotalSeasonScore = (runningTotal, matchTotal) => runningTotal + matchTotal;
 
-    const mergedResults = teams.map(team => {
-        return Object.assign({}, team, {
-            numberOfMatches: aggregatedStats[team.number] && aggregatedStats[team.number].numberOfMatches || 0,
-            avgScore: aggregatedStats[team.number] && aggregatedStats[team.number].avgScore || 0
+    const teamStats = teams
+        .map(team => {
+            const matchesForTeam = matches.filter(m => String(m.team) === team.number);
+            const totalPointsScoredInAllMatches = matchesForTeam
+                .map(calculateTotalMatchScore)
+                .reduce(calcTotalSeasonScore, 0);
+
+            return {
+                ...team,
+                numberOfMatches: matchesForTeam.length,
+                avgScore: totalPointsScoredInAllMatches / (matchesForTeam.length || 1)
+            };
         });
-    })
-    .sort((a, b) => {
+
+    teamStats.sort((a, b) => {
         if (a.avgScore === b.avgScore) {
             if (a.name < b.name) return -1;
             if (a.name > b.name) return 1;
@@ -45,7 +31,7 @@ function processTeamsAndMatches (teams, matches) {
         return b.avgScore - a.avgScore;
     });
 
-    return mergedResults;
+    return teamStats;
 }
 
 module.exports = {
@@ -59,12 +45,26 @@ module.exports = {
             // merge in match counts - this data is stored in the match api
             // TODO: add endpoint for getting this data directly from the match api
             request(config.apis.match.url, (matchError, response, matchApiResponse) => {
-                const teams = JSON.parse(teamApiResponse);
-                const matches = JSON.parse(matchApiResponse);
-                res.send({
-                    success: true,
-                    results: processTeamsAndMatches(teams.results, matches.results)
-                });
+                const parsedTeamApiResponse = JSON.parse(teamApiResponse);
+                const parseMatchApiResponse = JSON.parse(matchApiResponse);
+                if (!parsedTeamApiResponse.success || !parseMatchApiResponse.success) {
+                    console.log(
+                        'ERROR',
+                        'team api response', parsedTeamApiResponse.success,
+                        'match api resonse', parseMatchApiResponse.success
+                    );
+                    res.send({
+                        success: false,
+                        error: {
+                            message: 'Could not communicate with server, please try again later... :('
+                        }
+                    });
+                } else {
+                    res.send({
+                        success: true,
+                        results: processTeamsAndMatches(parsedTeamApiResponse.results, parseMatchApiResponse.results)
+                    });
+                }
             });
         });
     },
