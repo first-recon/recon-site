@@ -1,6 +1,7 @@
-const GameConfig = require('../../recon-app/recon-lib').GameConfig;
+const GameConfig = require('../src/recon-lib').GameConfig;
 const config = require('../config');
 const request = require('request-promise-native');
+const Express = require('express');
 
 function processTeamsAndMatches (teams, matches) {
 

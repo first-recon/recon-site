@@ -5,6 +5,7 @@ const config = require('./config');
 const controllers = require('./controllers');
 
 app.use(Express.static(path.join(__dirname, 'dist')));
+app.use('/download', Express.static(path.join(__dirname, 'data/downloadable')));
 
 app.get('/matches', controllers.matches);
 app.get('/teams/search', controllers.teamSearch);

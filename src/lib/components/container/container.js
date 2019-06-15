@@ -10,7 +10,13 @@ import Logo from '../logo/logo.js';
 export default function (generatedPage) {
 	var generatedNavbar = Navbar(
 		NavbarContainer(
-			NavbarFloat('left', [Logo('#')])
+			NavbarFloat('left', [
+				Logo('#')
+			]),
+			NavbarFloat('right', [
+				NavbarItem('Get the App', '#download'),
+				NavbarItem('About', '#about')
+			])
 		)
 	);
 

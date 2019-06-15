@@ -1,16 +1,16 @@
-.center-page {
-	max-width: 720px;
-	margin: 20px auto 0 auto;
-}
-
 .page-heading {
 	background-color: white;
 	width: 100%;
 	padding: 5px;
 	text-align: center;
-	border-bottom: 1px solid black;
 }
 
 .page-heading > h1 {
 	color: black;
+}
+
+.search-box {
+	font-size: 20px;
+	border: 2px solid grey;
+	padding: 12px 20px 15px 20px;
 }

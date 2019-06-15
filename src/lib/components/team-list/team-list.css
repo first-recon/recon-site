@@ -8,16 +8,22 @@
     margin-bottom: 5px;
     text-decoration: none;
     color: black;
-    border: 1px solid darkgrey;
-    padding: 2px 3px;
+    border: 2px solid grey;
+    padding: 20px 20px 15px 20px;
+    font-family: 'Josefin Sans';
+    font-size: 20px;
 }
 
-.team-result > div {
-    color: grey;
+.team-result > .label {
+
+}
+
+.team-result > .score {
     font-weight: normal;
     float: right;
 }
 
 .team-result:hover {
-    color: darkgrey;
+    color: white;
+    background-color: grey;
 }
