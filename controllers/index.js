@@ -81,7 +81,8 @@ module.exports = {
                 success: true,
                 results: processTeamsAndMatches(teams.results, matches.results)
             });
-        });
+        })
+        .catch(console.error);
     },
     team: (req, res) => {
         Promise.all([

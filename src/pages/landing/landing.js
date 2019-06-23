@@ -1,5 +1,4 @@
 import * as G from '../../lib/helpers/g.js';
-import config from '../../../config';
 
 import style from './landing.css';
 
@@ -18,30 +17,30 @@ export default function () {
 	});
 }
 
+const updateResults = (results) => teamList.innerHTML = TeamList(results, 'teamList');
+
 function onSearchBoxKeyUp(event) {
-	if (event.keyCode === 13) {
-		_search_teams(event.target.value)
-			.then(function (response) {
-				teamList.innerHTML = TeamList(response.results);
-			});
-	}
+	_search_teams(event.target.value, event.key === 13).then(updateResults);
 }
 
-function _search_teams(team) {
-	return new Promise(function (res, rej) {
+let cachedTeamList = [];
+
+function _search_teams(team, performNetworkSearch = true) {
+	if (!performNetworkSearch) {
+		return Promise.resolve(cachedTeamList.filter(({number}) => number.includes(team)));
+	}
+
+	return new Promise((res, rej) => {
 		fetch(!team ? '/teams' : '/teams/search?q=' + team)
-			.then(function (response) {
-				return response.json();
+			.then((response) => response.json())
+			.then(({ results }) => {
+				cachedTeamList = results;
+				res(results);
 			})
-			.then(function (ts) {
-				res(ts);
-			});
+			.catch(console.error);
 	});
 }
 
 G.onNewElement('teamList', function (teamList) {
-	_search_teams()
-		.then(function (response) {
-			teamList.innerHTML = TeamList(response.results);
-		});
+	_search_teams().then(updateResults);
 });

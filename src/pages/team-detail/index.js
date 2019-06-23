@@ -22,9 +22,10 @@ G.onNewElement('teamDetail', function (teamDetail) {
         .then(function (response) {
             if (response.success) {
                 var team = response.result;
-                G.get('#teamName').innerHTML = team.name;
-                G.get('#teamNumber').innerHTML = team.number;
-                G.get('#matchList').innerHTML = team.events.length ? MatchList(team.events) : 'No matches found :(';
+                const events = [...team.events];
+                events.sort((a, b) => !!a.name && !b.name ? -1 : 1);
+                G.get('#team').innerHTML = `${team.name} (#${team.number})`;
+                G.get('#matchList').innerHTML = team.events.length ? MatchList(events) : 'No matches found :(';
             }
         });
 });

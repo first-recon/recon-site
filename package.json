@@ -1,11 +1,12 @@
 {
   "name": "recon-site",
-  "version": "0.1.0",
+  "version": "0.6.0",
   "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js production",
     "start-dev": "webpack && cp -R www/* dist/ && node server.js development",
+    "start-prod": "docker rm -f recon-site && docker build -t recon-site:local . && docker run -p 3000:3000 --name recon-site recon-site:local",
     "build": "webpack && cp -R www/* dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

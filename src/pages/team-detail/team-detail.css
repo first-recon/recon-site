@@ -4,8 +4,12 @@
     margin-bottom: 10px;
 }
 
-#teamDetail {
-    margin: 10px;
+.team-info {
+    margin: auto;
+    display: flex;
+    font-family: 'Arial';
+    font-size: 24px;
+    font-weight: bold;
 }
 
 #teamNumber {
