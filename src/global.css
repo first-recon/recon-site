@@ -4,6 +4,22 @@
 }
 
 .center-page-lg {
-	max-width: 1300px;
+	max-width: 1550px;
 	margin: 20px auto 0 auto;
+}
+
+.content {
+	width: 100%;
+}
+
+@media screen and (max-width: 500px) {
+	.content {
+		width: 100%;
+	}
+
+	.center-page {
+		width: auto;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
 }

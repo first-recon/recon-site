@@ -1,75 +1,160 @@
 {
-    "rover-ruckus": [
-      {
-        "code": "auto_landing",
-        "period": "autonomous",
-        "name": "Landed",
-        "type": "boolean",
-        "value": 30
-      },
-      {
-        "code": "auto_sampling",
-        "period": "autonomous",
-        "name": "Sampled",
-        "type": "boolean",
-        "value": 25
-      },
-      {
-        "code": "auto_claiming",
-        "period": "autonomous",
-        "name": "Claimed Depot",
-        "type": "boolean",
-        "value": 15
-      },
-      {
-        "code": "auto_parking",
-        "period": "autonomous",
-        "name": "Parked",
-        "type": "boolean",
-        "value": 10
-      },
-      {
-        "code": "tele_gold_mineral",
-        "period": "teleop",
-        "name": "Gold Mineral",
-        "type": "number",
-        "value": 5
-      },
-      {
-        "code": "tele_silver_mineral",
-        "period": "teleop",
-        "name": "Silver Mineral",
-        "type": "number",
-        "value": 5
-      },
-      {
-        "code": "tele_mineral_depot",
-        "period": "teleop",
-        "name": "Minerals in Depot",
-        "type": "number",
-        "value": 2
-      },
-      {
-        "code": "end_latched",
-        "period": "endgame",
-        "name": "Robot Latched",
-        "type": "boolean",
-        "value": 50
-      },
-      {
-        "code": "end_parked",
-        "period": "endgame",
-        "name": "Robot Parked",
-        "type": "boolean",
-        "value": 15
-      },
-      {
-        "code": "end_parked_fully",
-        "period": "endgame",
-        "name": "Robot Parked in Crater",
-        "type": "boolean",
-        "value": 10
-      }
-    ]
+  "skystone": [
+    {
+      "code": "auto_repo_foundation",
+      "period": "autonomous",
+      "name": "Reposition Foundation to Building Site",
+      "type": "boolean",
+      "value": 10
+    },
+    {
+      "code": "auto_deliver_skystones",
+      "period": "autonomous",
+      "name": "Delivering Skystones",
+      "type": "number",
+      "value": 10
+    },
+    {
+      "code": "auto_deliver_stones",
+      "period": "autonomous",
+      "name": "Delivering Stones under Alliance Skybridge",
+      "type": "number",
+      "value": 2
+    },
+    {
+      "code": "auto_place_stones_foundation",
+      "period": "autonomous",
+      "name": "Placing Stones on Foundation",
+      "type": "number",
+      "value": 4
+    },
+    {
+      "code": "auto_park_skybridge",
+      "period": "autonomous",
+      "name": "Navigating under Skybridge",
+      "type": "boolean",
+      "value": 5
+    },
+    {
+      "code": "tele_deliver_stones",
+      "period": "teleop",
+      "name": "Delivering Stones under Alliance Skybridge",
+      "type": "number",
+      "value": 1
+    },
+    {
+      "code": "tele_place_stones_foundation",
+      "period": "teleop",
+      "name": "Placing Stones on Foundation",
+      "type": "number",
+      "value": 1
+    },
+    {
+      "code": "tele_skyscraper_bonus",
+      "period": "teleop",
+      "name": "Skyscraper Bonus",
+      "type": "number",
+      "value": 2
+    },
+    {
+      "code": "end_capping_bonus",
+      "period": "endgame",
+      "name": "Capping Bonus",
+      "type": "number",
+      "value": 5
+    },
+    {
+      "code": "end_level_bonus",
+      "period": "endgame",
+      "name": "Level Bonus",
+      "type": "number",
+      "value": 1
+    },
+    {
+      "code": "end_move_foundation",
+      "period": "endgame",
+      "name": "Moving Foundation from Building Site",
+      "type": "boolean",
+      "value": 15
+    },
+    {
+      "code": "end_park_building_site",
+      "period": "endgame",
+      "name": "Parking in Building Site",
+      "type": "boolean",
+      "value": 5
+    }
+  ],
+  "rover-ruckus": [
+    {
+      "code": "auto_landing",
+      "period": "autonomous",
+      "name": "Landed",
+      "type": "boolean",
+      "value": 30
+    },
+    {
+      "code": "auto_sampling",
+      "period": "autonomous",
+      "name": "Sampled",
+      "type": "boolean",
+      "value": 25
+    },
+    {
+      "code": "auto_claiming",
+      "period": "autonomous",
+      "name": "Claimed Depot",
+      "type": "boolean",
+      "value": 15
+    },
+    {
+      "code": "auto_parking",
+      "period": "autonomous",
+      "name": "Parked",
+      "type": "boolean",
+      "value": 10
+    },
+    {
+      "code": "tele_gold_mineral",
+      "period": "teleop",
+      "name": "Gold Mineral",
+      "type": "number",
+      "value": 5
+    },
+    {
+      "code": "tele_silver_mineral",
+      "period": "teleop",
+      "name": "Silver Mineral",
+      "type": "number",
+      "value": 5
+    },
+    {
+      "code": "tele_mineral_depot",
+      "period": "teleop",
+      "name": "Minerals in Depot",
+      "type": "number",
+      "value": 2
+    },
+    {
+      "code": "end_latched",
+      "period": "endgame",
+      "name": "Robot Latched",
+      "type": "boolean",
+      "value": 50
+    },
+    {
+      "code": "end_parked",
+      "period": "endgame",
+      "name": "Robot Parked",
+      "type": "boolean",
+      "value": 15
+    },
+    {
+      "code": "end_parked_fully",
+      "period": "endgame",
+      "name": "Robot Parked in Crater",
+      "type": "boolean",
+      "value": 10
+    }
+  ]
 }
-  

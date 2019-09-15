@@ -5,13 +5,14 @@
 }
 
 .data-cell {
-    font-size: 22px;
+    font-size: 18px;
     font-family: 'Courier';
     text-align: center;
 }
 
 .data-cell-container:hover {
     background-color: rgb(140, 140, 140);
+    color: white;
 }
 
 .data-header-cell {

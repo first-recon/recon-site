@@ -12,6 +12,10 @@
     font-weight: bold;
 }
 
+.match-list {
+    width: 1550px;
+}
+
 #teamNumber {
     width: auto;
     margin-right: 8px;

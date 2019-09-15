@@ -1,4 +1,5 @@
-const GameConfig = require('../src/recon-lib').GameConfig;
+// FIXME: this import structure is just godawful.
+const { GameConfig, config: gameNameConfig } = require('../src/recon-lib')
 const config = require('../config');
 const request = require('request-promise-native');
 const Express = require('express');
@@ -45,7 +46,7 @@ module.exports = {
     
             // merge in match counts - this data is stored in the match api
             // TODO: add endpoint for getting this data directly from the match api
-            request(config.apis.match.url, (matchError, response, matchApiResponse) => {
+            request(`${config.apis.match.url}?game=${gameNameConfig.game}`, (matchError, response, matchApiResponse) => {
                 const parsedTeamApiResponse = JSON.parse(teamApiResponse);
                 const parseMatchApiResponse = JSON.parse(matchApiResponse);
                 if (!parsedTeamApiResponse.success || !parseMatchApiResponse.success) {
@@ -70,9 +71,9 @@ module.exports = {
         });
     },
     teamSearch: (req, res) => {
-        Promise.all([
+        return Promise.all([
             request(`${config.apis.team.url}/search?q=${req.query.q}`),
-            request(`${config.apis.match.url}?team=${req.query.q}`)
+            request(`${config.apis.match.url}?team=${req.query.q}&game=${gameNameConfig.game}`)
         ])
         .then(([teamApiResponse, matchesApiResponse]) => {
             const teams = JSON.parse(teamApiResponse);
@@ -87,7 +88,7 @@ module.exports = {
     team: (req, res) => {
         Promise.all([
             request(`${config.apis.team.url}/${req.params.team}`),
-            request(`${config.apis.match.url}?team=${req.params.team}`)
+            request(`${config.apis.match.url}?team=${req.params.team}&game=${gameNameConfig.game}`)
         ])
         .then(([teamJSON, matchesJSON]) => {
             const team = JSON.parse(teamJSON).result;

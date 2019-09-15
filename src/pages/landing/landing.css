@@ -1,8 +1,8 @@
 .page-heading {
 	background-color: white;
-	width: 100%;
 	padding: 5px;
 	text-align: center;
+	display: flex;
 }
 
 .page-heading > h1 {
@@ -13,4 +13,14 @@
 	font-size: 20px;
 	border: 2px solid grey;
 	padding: 12px 20px 15px 20px;
+	-webkit-appearance: none;
+	border-radius: 0;
+	margin: auto;
+}
+
+@media screen and (max-width: 500px) {
+	.search-box {
+		flex: 1;
+		margin: 0 5px;
+	}
 }

@@ -3,18 +3,23 @@ import Container from '../lib/components/container/container.js';
 import Landing from './landing/landing.js';
 import TeamDetail from './team-detail';
 import Download from './download/download';
+import About from './about/about';
 
 export default {
 	landing: {
 		url: '',
-		component: function () { return Container(Landing()) }
+		component: () => Container(Landing())
 	},
 	team: {
 		url: /(team)\/\d+/,
-		component: function () { return Container(TeamDetail()) }
+		component: () => Container(TeamDetail())
 	},
 	download: {
 		url: /(download)/,
-		component: function () { return Container(Download()) }
+		component: () => Container(Download())
+	},
+	about: {
+		url: /(about)/,
+		component: () => Container(About())
 	}
 }
